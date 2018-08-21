@@ -23,34 +23,7 @@ function parseGuess(guess) {
 };
 
 
-// Model Object
-var model = {
-  boardSize: 7,
-  numShips: 3,
-  shipsSunk: 0,
-  shipLength: 3,
-  ships: [ { locations: ["06", "16", "26"], hits: ["", "", ""] },
-           { locations: ["24", "34", "44"], hits: ["", "", ""] },
-           { locations: ["10", "11", "12"], hits: ["", "", ""] } ],
-           
-  fire: function(guess) {
-    for (var i = 0; i < this.numShips; i++) { // loop though the ships
-      var ship = this.ships[i]; // for each ship create a variable called ship
-      var locations = ship.locations; 
-      var index = locations.indexOf(guess); // if 'guess' is in the locations array then we have a match
-      if (index >= 0) {
-        ship.hits[index] = "hit"; // mark the hits array at the same index
-        return true;
-
-      }
-    }
-    return false; // after looping though all the ships we return false if there are no matches to the 'guess' string
-  }
-};
-
-
-
-// View Object
+// view object
 var view = {
   // displayMessage method takes an arugment which is a string 
   // and displays it in the message area
@@ -70,10 +43,37 @@ var view = {
   }
 };
 
+// model object
+var model = {
+  boardSize: 7,
+  numShips: 3,
+  shipsSunk: 0,
+  shipLength: 3,
+  ships: [ { locations: ["06", "16", "26"], hits: ["", "", ""] },
+           { locations: ["24", "34", "44"], hits: ["", "", ""] },
+           { locations: ["10", "11", "12"], hits: ["", "", ""] } ],
+
+  fire: function(guess) {
+    for (var i = 0; i < this.numShips; i++) { // loop though the ships
+      var ship = this.ships[i]; // for each ship create a variable called ship
+      var index = ship.locations.indexOf(guess); // if 'guess' is in the locations array then we have a match. if not, 'indexOf' will return -1
+      if (index >= 0) {
+        ship.hits[index] = "hit"; // mark the hits array at the same index
+        view.displayHit(guess);
+        view.displayMessage("HIT!!!");
+        return true;
+
+      }
+    }
+    view.displayMiss(guess);
+    view.displayMessage("You Missed!!!");
+    return false; // after looping though all the ships we return false if there are no matches to the 'guess' string
+  }
+  
+};
 
 
-
-
+// model.fire("44");
 
 
 
