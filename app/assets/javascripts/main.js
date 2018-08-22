@@ -1,4 +1,5 @@
 // model object
+
 var model = {
   boardSize: 7,
   numShips: 3,
@@ -36,6 +37,7 @@ var model = {
 };
 
 // view object
+
 var view = {
   // displayMessage method takes an arugment which is a string 
   // and displays it in the message area
@@ -73,39 +75,42 @@ var controller = {
 // helper function
 
 function parseGuess(guess) {
+	var alphabet = ["A", "B", "C", "D", "E", "F", "G"]; // create an array of letters and assign it to the variable 'alphabet'
 
-  var alphabet = ["A", "B", "C", "D", "E", "F", "G"]; // create an array of letters and assign it to the variable 'alphabet'
+	if (guess === null || guess.length !== 2) {// we check for an empty string and if there is a string it is no more than two characters
+		alert("Oops, please enter a letter and a number on the board.");
+	} else {
+		var firstChar = guess.charAt(0); // here we grab the first character of the guess string and assign it to 'firstChar'
+		var row = alphabet.indexOf(firstChar); // here we grab the index number of the 'firstChar' variable
+		var column = guess.charAt(1); // here we grab the second character of the guess string and assing it to 'column'
+		
+		if (isNaN(row) || isNaN(column)) {
+			alert("Oops, that isn't on the board.");
+		} else if (row < 0 || row >= model.boardSize ||
+		           column < 0 || column >= model.boardSize) {
+			alert("Oops, that's off the board!");
+		} else {
+			return row + column; // if string 'guess' passes validation then return letter (row) and number (column) and concatenate to form a single sting to two characters
+		}
+	}
+	return null;
+}
 
-  if (guess === null || guess.length !== 2) { // we check for an empty string and if there is a string it is no more than two characters
-    alert("please enter a letter and a number");
-  } else {
-    var firstChar = guess.charAt(0); // here we grab the first character of the guess string and assign it to 'firstChar'
-    var row = alphabet.indexOf(firstChar); // here we grab the index number of the 'firstChar' variable
-    var column = guess.charAt(1); // here we grab the second character of the guess string and assing it to 'column'
-    
-    if (isNaN(row) || isNaN(column)) {
-      alert("Error - Enter a letter and number that is on the board. Please try again.");
+window.onload = init;
 
-    } else if (row < 0 || row >= model.boardSize || column < 0 || column >= model.boardSize) {
-      alert("Error - That is off the board! Please try again.");
-    
-    } else {
-      return row + column; // if string 'guess' passes validation then return letter (row) and number (column) and concatenate to form a single sting to two characters
-    
-    }
-  }
-  return null;
-};
+function init() {
+  var fireButton = document.getElementById("fireButton");
+  fireButton.onclick = handleFireButton;
+
+}
+
+function handleFireButton() {
+  var guessInput = document.getElementById("guessInput");
+  var guess = guessInput.value; // get the user's guess from the input element
+  
+  controller.processGuess(guess); // pass the input guess to the controller
+  
+  guessInput.value = ""; // set the input to empty string
+}
 
 
-
-
-
-
-
-// model.fire("44");
-
-
-
-
-controller.processGuess("A0");
