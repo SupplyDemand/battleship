@@ -68,12 +68,31 @@ var model = {
     view.displayMiss(guess);
     view.displayMessage("You Missed!!!");
     return false; // after looping though all the ships we return false if there are no matches to the 'guess' string
-  }
-  
+  },
+
+  isSunk: function(ship) {
+    for (var i = 0; i < this.shipLength; i++) {
+      if (ship.hits[i] !== "hit") {
+        return false;
+      }
+    }
+    return true;
+  }  
 };
 
 
 // model.fire("44");
 
 
+var controller = {
+  guesses: 0,
 
+  processGuess: function(guess) {
+    var location = parseGuess(guess); // validates the guess
+    if (location) {
+      this.guesses++; // if user enters valid guess we then increase guesses by one
+      var hit = model.fire(location);
+
+    }
+  }
+}
